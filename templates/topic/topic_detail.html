@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ instance.name }} | {{block.super}}{% endblock head_title %}
+
+{% block content %}
+
+<h1>Topic {{title}}</h1>
+
+NAME: {{ instance.name }}<br/>
+DESCRIPTION: {{ instance.description }}<br/>
+CREATED AT: {{ instance.created_at }}<br/>
+AUTHOR: {{ instance.author }}<br/>
+URL: {{ instance.url_name }}<br/>
+
+{% endblock content %}
