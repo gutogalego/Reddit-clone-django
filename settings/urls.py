@@ -22,4 +22,5 @@ urlpatterns = [
     # Applications
     url(r'^', include('accounts.urls')),
     url(r'^posts/', include('posts.urls')),
+    url(r'^topics/', include('topics.urls')),
 ]
