@@ -24,3 +24,6 @@ class Topic(models.Model):
 
     def get_absolute_url(self):
         return reverse("topic_detail", kwargs={"url_name": self.url_name})
+
+    class Meta:
+        ordering = ['url_name']

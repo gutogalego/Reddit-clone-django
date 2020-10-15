@@ -6,8 +6,11 @@
 
 <div class="col-md-6 offset-md-3">
 <h1 >{{title}} <small>{{ instance.timestamp }}</small></h1>
+    {% if instance.image %}
+    <img src="{{instance.image.url}}" class="img-responsive"/>
+    {% endif %}
 {{ instance.content | linebreaks}}<br/>
-{{ instance.updated }}<br/>
+    <small>last edit: {{ instance.last_updated }}</small><br/>
 </div>
 
 {% endblock content %}
