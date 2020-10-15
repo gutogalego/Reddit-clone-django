@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
 from .forms import PostForm
@@ -33,10 +34,15 @@ def post_detail(request, id=None):
 
 
 def post_list(request):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by("-timestamp")
+    paginator = Paginator(queryset, 7)  # Show 7 posts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         "title": "List",
-        "object_list": queryset
+        "object_list": queryset,
+        'page_obj': page_obj
     }
 
     return render(request, "posts/post_list.html", context)
