@@ -12,6 +12,8 @@ CREATED AT: {{ instance.created_at }}<br/>
 AUTHOR: {{ instance.author }}<br/>
 URL: {{ instance.url_name }}<br/>
 
+<p><a href="{% url 'post_create' topic=instance.url_name %}" class="btn btn-primary" role="button">Create post</a></p>
+
 {% for post in page_obj %}
 <div class="col-md-6 offset-md-3">
 <h1><a href ='{{ post.get_absolute_url }}'>{{ post.title }}</a><small> {{ post.timestamp|timesince }} ago</small></h1>

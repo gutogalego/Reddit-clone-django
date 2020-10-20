@@ -23,8 +23,10 @@ urlpatterns = [
 
     # Applications
     url(r'^', include('accounts.urls')),
-    url(r'^posts/', include('posts.urls')),
+
+    url(r'^topic/', include('posts.urls')),
     url(r'^topic/', include('topic.urls')),
+
 ]
 
 if settings.DEBUG:

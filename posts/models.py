@@ -22,7 +22,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={"id": self.id})
+        return reverse("post_detail", kwargs={"topic": self.topic, "id": self.id})
 
     class Meta:
         ordering = ['-timestamp', "-last_updated"]
