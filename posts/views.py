@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -9,10 +9,14 @@ from .models import Post
 
 
 def post_create(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("<h1>Please log in to post</h1>")
+
     form = PostForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.author = request.user
         instance.save()
         # message success
         messages.success(request, "Successfully Created")

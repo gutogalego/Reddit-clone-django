@@ -12,9 +12,10 @@ from .forms import TopicForm
 def topic_create(request):
     form = TopicForm(request.POST or None)
 
-    username = "Not logged in"
-    if request.user.is_authenticated:
-        username = request.user.username
+    if not request.user.is_authenticated:
+        return HttpResponse("<h1>Please log in to create topic</h1>")
+
+    username = request.user.username
 
     if form.is_valid():
         instance = form.save(commit=False)
