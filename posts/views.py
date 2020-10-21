@@ -6,6 +6,9 @@ from django.core.paginator import Paginator
 # Create your views here.
 from .forms import PostForm
 from .models import Post
+from comment.models import Comment
+from topic.models import Topic
+from comment.forms import CommentForm
 
 
 def post_create(request, topic=None):
@@ -17,6 +20,7 @@ def post_create(request, topic=None):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.author = request.user
+        instance.topic = Topic.objects.get(pk=topic)
         instance.save()
         # message success
         messages.success(request, "Successfully Created")
@@ -31,10 +35,21 @@ def post_create(request, topic=None):
 def post_detail(request, topic=None, id=None):
     instance = get_object_or_404(Post, id=id)
     username = request.user
+    comments = instance.comment.all()
+
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        new_comment = form.save(commit=False)
+        new_comment.author = request.user
+        new_comment.post = Post.objects.get(pk=id)
+        new_comment.save()
+
     context = {
         "title": instance.title,
         "instance": instance,
-        "username": username
+        "username": username,
+        "comments": comments,
+        "form": form
     }
     return render(request, "posts/post_detail.html", context)
 

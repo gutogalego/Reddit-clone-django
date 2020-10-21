@@ -1,28 +1,25 @@
 {% extends "base.html" %}
 
-    {% block content %}
-
+{% block content %}
 <h1>{{title}}</h1>
-
-
 
 {% for obj in page_obj %}
 <ul class="thumbnails">
     <li class="span4">
-    <div class="thumbnail">
-<div class="col-sm-6">
-    {% if obj.image %}
-    <img src="{{obj.image.url}}" class="img-responsive"/>
-    {% endif %}
-        <h3><a href ='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><small> {{ obj.timestamp|timesince }} ago</small></h3>
-      <p>{{ obj.content|linebreaks|truncatechars:120}}</p>
-            <p><a href='{{ obj.get_absolute_url }}' class="btn btn-primary" role="button">View</a></p>
-</div>
+        <div class="thumbnail">
+            <div class="col-sm-6">
+                {% if obj.image %}
+                <img src="{{obj.image.url}}" class="img-responsive"/>
+                {% endif %}
+                <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><small> {{ obj.timestamp|timesince }}
+                    ago</small></h3>
+                <p>{{ obj.content|linebreaks|truncatechars:120}}</p>
+                <p><a href='{{ obj.get_absolute_url }}' class="btn btn-primary" role="button">View</a></p>
+            </div>
 
-</div>
-        </li>
-    </ul>
-
+        </div>
+    </li>
+</ul>
 {% endfor %}
 
 <div class="pagination">
@@ -42,6 +39,4 @@
         {% endif %}
     </span>
 </div>
-
-
-    {% endblock content %}
+{% endblock content %}

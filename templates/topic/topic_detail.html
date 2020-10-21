@@ -16,11 +16,12 @@ URL: {{ instance.url_name }}<br/>
 
 {% for post in page_obj %}
 <div class="col-md-6 offset-md-3">
-<h1><a href ='{{ post.get_absolute_url }}'>{{ post.title }}</a><small> {{ post.timestamp|timesince }} ago</small></h1>
+    <h1><a href='{{ post.get_absolute_url }}'>{{ post.title }}</a><small> {{ post.timestamp|timesince }} ago</small>
+    </h1>
     {% if post.image %}
     <img src="{{post.image.url}}" class="img-responsive"/>
     {% endif %}
-{{ post.content | linebreaks}}<br/>
+    {{ post.content | linebreaks}}<br/>
     <small>last edit: {{ post.last_updated }}</small><br/>
 </div>
 {% endfor %}

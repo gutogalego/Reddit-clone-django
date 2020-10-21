@@ -26,6 +26,7 @@ urlpatterns = [
 
     url(r'^topic/', include('posts.urls')),
     url(r'^topic/', include('topic.urls')),
+    url(r'^topic/', include('comment.urls')),
 
 ]
 
