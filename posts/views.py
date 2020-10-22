@@ -35,8 +35,15 @@ def post_create(request, topic=None):
 def post_detail(request, topic=None, id=None):
     instance = get_object_or_404(Post, id=id)
     username = request.user
-    comments = instance.comment.all()
+    if instance.draft:
+        if not instance.author == username:
+            raise Http404
 
+    logged_in = False
+    if request.user.is_authenticated:
+        logged_in = True
+
+    comments = instance.comment.all()
     form = CommentForm(request.POST or None)
     if form.is_valid():
         new_comment = form.save(commit=False)
@@ -49,6 +56,7 @@ def post_detail(request, topic=None, id=None):
         "instance": instance,
         "username": username,
         "comments": comments,
+        "logged_in": logged_in,
         "form": form
     }
     return render(request, "posts/post_detail.html", context)

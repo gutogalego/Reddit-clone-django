@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -34,7 +35,18 @@ def topic_create(request):
 
 def topic_detail(request, url_name=None):
     topic = get_object_or_404(Topic, url_name=url_name)
-    posts_query = topic.posts.all()
+    posts_query = topic.posts.active()
+    if request.user.is_staff or request.user.is_superuser:
+        posts_query = topic.posts.all()
+
+    query = request.GET.get("q")
+    if query:
+        posts_query = posts_query.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(author__username__icontains=query)
+        ).distinct()
+
     paginator = Paginator(posts_query, 7)  # Show 7 topics per page.
 
     page_number = request.GET.get('page')
@@ -49,6 +61,9 @@ def topic_detail(request, url_name=None):
 
 def topic_list(request):
     queryset = Topic.objects.all()
+    query = request.GET.get("q")
+    if query:
+        queryset = queryset.filter(name__icontains=query)
     paginator = Paginator(queryset, 7)  # Show 7 topics per page.
 
     page_number = request.GET.get('page')
